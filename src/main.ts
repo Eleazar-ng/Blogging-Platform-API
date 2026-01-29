@@ -1,16 +1,18 @@
 import { NestFactory } from '@nestjs/core';
+import { ConfigService } from '@nestjs/config';
 import { AppModule } from './app.module';
 import helmet from "helmet";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  const configService = app.get(ConfigService);
 
   // Security header middleware
   app.use(helmet());
 
   // Cors
   app.enableCors({
-    origin: ["*"],
+    origin: configService.get('CORS_ORIGIN', "*"),
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     credentials: true,
   })
