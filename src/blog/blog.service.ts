@@ -23,4 +23,18 @@ export class BlogService {
 
     return blogPost.save();
   }
+
+  async findAll() {
+    const [data, total] = await Promise.all([
+      this.blogPostModel.find().exec(),
+      this.blogPostModel.countDocuments(),
+    ]);
+
+    return {
+      data,
+      meta: {
+        total
+      },
+    };
+  }
 }

@@ -1,5 +1,5 @@
 import {
-  Controller, Post, Body, UseGuards, 
+  Controller, Post, Body, UseGuards, Get,
   Request,
 } from '@nestjs/common';
 import { BlogService } from './blog.service';
@@ -21,6 +21,18 @@ export class BlogController {
         blogPost
       },
     };
+  }
+
+  @Get()
+  @UseGuards(JwtAuthGuard)
+  async findAll() {
+    const blog = await this.blogService.findAll()
+    return {
+      message: 'Blog fetched successfully',
+      data:{
+        blog
+      }
+    }
   }
 
 }
