@@ -10,6 +10,7 @@ import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { TransformInterceptor } from './common/interceptors/transform.interceptor';
 import { LoggingInterceptor } from './common/interceptors/logging.interface';
+import { BlogModule } from './blog/blog.module';
 
 
 @Module({
@@ -17,7 +18,8 @@ import { LoggingInterceptor } from './common/interceptors/logging.interface';
     AppConfigModule,
     DatabaseModule,
     AuthModule,
-    UserModule
+    UserModule,
+    BlogModule
   ],
   controllers: [AppController],
   providers: [
