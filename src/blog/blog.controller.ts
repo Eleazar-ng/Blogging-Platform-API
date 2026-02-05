@@ -1,11 +1,12 @@
 import {
-  Controller, Post, Body, UseGuards, Get, Param,
+  Controller, Post, Body, UseGuards, Get, Param, Put,
   Request,
 } from '@nestjs/common';
 import { BlogService } from './blog.service';
 import { CreateBlogPostDto } from './dto/create-blog-post.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { BlogPostStatus } from './schema/blog-post.schema';
+import { UpdateBlogPostDto } from './dto/upddate-blog-post.dto';
 
 @Controller('blog')
 export class BlogController {
@@ -45,6 +46,18 @@ export class BlogController {
         blogPost
       }
     }
+  }
+
+  @Put(":id")
+  @UseGuards(JwtAuthGuard)
+  async update(@Param('id') id: string, @Body() updateBlogPostDto: UpdateBlogPostDto, @Request() req) {
+    const blogPost = await this.blogService.update(id, updateBlogPostDto, req.user._id);
+    return {
+      message: 'Blog post updated successfully',
+      data: {
+        blogPost
+      }
+    };
   }
 
 
