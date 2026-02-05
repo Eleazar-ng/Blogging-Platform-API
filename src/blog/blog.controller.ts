@@ -36,6 +36,30 @@ export class BlogController {
     }
   }
 
+  @Get("me")
+  @UseGuards(JwtAuthGuard)
+  async findAllByUser(@Request() req) {
+    const blog = await this.blogService.findAllByUser(req.user._id)
+    return {
+      message: 'Blog retrieved successfully',
+      data:{
+        blog
+      }
+    }
+  }
+
+  @Get("me/:id")
+  @UseGuards(JwtAuthGuard)
+  async findOneByUser(@Param('id') id: string, @Request() req) {
+    const blogPost = await this.blogService.findOneByUser(id, req.user._id);
+    return {
+      message: 'Blog post retrieved successfully',
+      data:{
+        blogPost
+      }
+    }
+  }
+
   @Get(":id")
   @UseGuards(JwtAuthGuard)
   async findOne(@Param('id') id: string) {
@@ -70,6 +94,10 @@ export class BlogController {
       data: null
     }
   }
+
+
+
+
 
 
 }

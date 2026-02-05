@@ -84,4 +84,31 @@ export class BlogService {
     await this.blogPostModel.deleteOne({ _id: id }).exec();
     return ;
   }
+
+  async findAllByUser(author:string) {
+    const query: any = {};
+    query.author = author;
+
+    const [data, total] = await Promise.all([
+      this.blogPostModel.find(query).exec(),
+      this.blogPostModel.countDocuments(query),
+    ]);
+
+    return {
+      data,
+      meta: {
+        total
+      },
+    };
+  }
+
+  async findOneByUser(id: string, authorId:string) {
+    const blogPost = await this.blogPostModel.findById({ _id: id, author: authorId }).exec();
+
+    if (!blogPost) {
+      throw new NotFoundException('Blog post not found');
+    }
+
+    return blogPost;
+  }
 }
