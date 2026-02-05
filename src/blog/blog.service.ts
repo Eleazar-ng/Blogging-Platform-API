@@ -37,4 +37,14 @@ export class BlogService {
       },
     };
   }
+
+  async findOne(id: string) {
+    const blogPost = await this.blogPostModel.findById(id).exec();
+
+    if (!blogPost) {
+      throw new NotFoundException('Blog post not found');
+    }
+
+    return blogPost;
+  }
 }
