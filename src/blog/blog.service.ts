@@ -69,4 +69,19 @@ export class BlogService {
     Object.assign(blogPost, updateBlogPostDto);
     return blogPost.save();
   }
+
+  async remove(id: string, userId: string): Promise<void> {
+    const blogPost = await this.blogPostModel.findById(id).exec();
+    if (!blogPost) {
+      throw new NotFoundException('Blog post not found');
+    }
+
+    // Check ownership
+    if (blogPost.author.toString() != userId) {
+      throw new ForbiddenException('You can only delete your own blog posts');
+    }
+
+    await this.blogPostModel.deleteOne({ _id: id }).exec();
+    return ;
+  }
 }

@@ -1,6 +1,6 @@
 import {
   Controller, Post, Body, UseGuards, Get, Param, Put,
-  Request,
+  Request, Delete, HttpCode, HttpStatus
 } from '@nestjs/common';
 import { BlogService } from './blog.service';
 import { CreateBlogPostDto } from './dto/create-blog-post.dto';
@@ -58,6 +58,17 @@ export class BlogController {
         blogPost
       }
     };
+  }
+
+  @Delete(':id')
+  @UseGuards(JwtAuthGuard)
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async remove(@Param('id') id: string, @Request() req) {
+    await this.blogService.remove(id, req.user._id);
+    return {
+      message: 'Blog post deleted successfully',
+      data: null
+    }
   }
 
 
